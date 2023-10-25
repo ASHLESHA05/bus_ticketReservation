@@ -153,6 +153,7 @@ void mainClass::displayTicket(string bnm,char name_[],char phn_[]){
   cout.write(name,strlen(name));
 
   */
+  cout<<"passenger  ";
   
 }
 int main(){
