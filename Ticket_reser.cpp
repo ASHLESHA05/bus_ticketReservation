@@ -9,30 +9,32 @@ way of working:
      -->select seat,payment
      -->booked,send mail, reciept 
 
-
-
 */
 #include<iostream>
 #include<string.h>
 #include<stdlib.h>
 #include<unistd.h>
 #include<fstream>
-#include "layout.h"
+#include<iomanip>
+#include<vector>
+#include "layout.h" 
 // This header file contains declarations for all of the functions in the Windows API, 
 using namespace std;
 class mainClass{
-    public:
       string key ,bus_num;//this is a keycode for different bus places...
       int A[32],date,booked=0;
       char start[15],desti[15],name[15],phn[10];
+    public:
       void changeInFileW();
       void readFile();
       void display_Abus(string);  
       void display_Avai(string);  //done  displays available seats
-      int check_avilabe(char[]);
+      int check_avilabe(string);
       void FillDetails();
       void PERSONAL();
-      void displayTicket(string,char[],char[]);
+      void mainpage();
+      void displayTicket(string,string);
+      string getnearestloc(const string& reference, const vector<string>& strings);
       // CREATE another class to get personal information
 
 };
@@ -62,7 +64,6 @@ void mainClass::display_Avai(string num){     //this function is used to display
     //make chages in the file i.e decrease the seats according to number
 
 
-
     
     }
     else{
@@ -79,24 +80,54 @@ void mainClass::display_Abus(string key){  // this displays available bus
     //read from csv file.....
 
 }
-int mainClass::check_avilabe(char desti[]){
+int mainClass::check_avilabe(string desti){
     //check for the availablle bus from the file 
-    /*
-      if(desti==favi){
+    ifstream fin;
+    string favi;
+    fin.open("available_locations.txt");
+     while(getline(fin,favi)){
+       
+        if(desti==favi){
         return 1;
       }
-      else{
+     }
+  
     return 0;
           
         //clear the display
-        cout<<"Not available"
+        
         //redirect to some of the nearest bus station. or ask for re enter
         // CALL START AND DESTINATION  AVAILABILITIES:
 
       }
-    */
+
+
+string mainClass::getnearestloc(const string& reference, const vector<string>& strings){
+     string HMS;//HIGHEST MATCHING STRING
+     int maxmatch=0,count=0;
+     for(const string& str:strings){
+      count=0;
+      for(int i=0;i<min(str.length(),reference.length());i++){
+        if(reference[i]==str[i]){
+          count++;
+        }
+        else 
+          break;         //increasing untill we match the string  and assigning str to HMS  else set count=0
+      }
+      if(maxmatch<count){
+        maxmatch=count;   //setting maxmatch as count and then   checking it whether next string matches same charecter or not..
+        HMS=str;          //setting HMS to a city name ..it get changes whenever we encounter a city name which is morematching to the enterd city name
+
+      }
+    
+     }
+     return HMS;
 }
+
+
+
 void mainClass::FillDetails(){
+    vector <string> cities;
     cout<<"enter starting point ";
     cin.getline(start,15);
     cout<<"Checking for availability.....";
@@ -108,6 +139,14 @@ void mainClass::FillDetails(){
     //write conditions in checking the destination
     if(!check_avilabe(start)){
        cout<<"No Bus for this loc\nDid u mean ";
+       
+
+
+
+       //try to extract from another CLASS  INHERITENCE....***#
+       //USE THE CLASS TO READ THE ITEMS FROM FILE having  available CITIES
+
+       cout<<"\n\n "<<getnearestloc(start,cities)<<"  ??";
        //write conditions for nearest location..
        //and display it
        getchar();
@@ -120,12 +159,19 @@ void mainClass::FillDetails(){
         if(!check_avilabe(desti)){
             cout<<"No Bus for this loc\nDid u mean ";
             //write conditions for nearest location..
+            cout<<"\n\n "<<getnearestloc(start,cities)<<"  ??";
             //and display it
             getchar();
             system("cls");
             FillDetails();
         }
         else{  
+               if(desti==start){
+                cout<<"start and destination cannot be same plz re Enter....";
+                getchar();
+                system("cls");
+                FillDetails();
+               }
                char temp[5];
                cout<<"ENTER date of trave dd/mm  ";
                cin.getline(temp,5);
@@ -135,12 +181,12 @@ void mainClass::FillDetails(){
 }
 void mainClass::PERSONAL(){
   system("cls");
-  cout<<" ENTER YOUR NAME : ";
+  cout<<" ENTER YOUR NAME :   ";
   cin.getline(name,15);
   cout<<"\n\nphone number : ";
   cin.getline(phn,10);
 }
-void mainClass::displayTicket(string bnm,char name_[],char phn_[]){
+void mainClass::displayTicket(string PNR,string phn){
   //fetch all details of bus bnm from file..
   //in file of bus number bnm  search for person with name name_  ...  get info like source, destinaion
   system("cls");
@@ -153,10 +199,52 @@ void mainClass::displayTicket(string bnm,char name_[],char phn_[]){
   cout.write(name,strlen(name));
 
   */
+  cout<<"passenger  ";
   
+}
+
+void mainClass::mainpage(){
+    int choice;
+    string phn,PNR;
+    cout<<setw(25)<<"WELCOME"<<endl;
+    cout<<"\n\n\t1.Book Ticket\n\t2.view Your Ticket\n\t3.EXIT\n\t";
+    cin>>choice;
+    switch(choice){
+      case 1:FillDetails();
+             break;
+      case 2:
+            cout<<"Enter your PNR and phone number:";
+            cin>>PNR>>phn;
+            displayTicket(PNR,phn);
+            break;
+      case 3:
+            cout<<"EXITING....IN   .";
+            sleep(2);
+            system("cls");
+            sleep(1);
+            cout<<"\n\n\t\t3 ";
+            sleep(1);
+            system("cls");
+            cout<<"\n\n\t\t2 ";
+            sleep(1);
+            system("cls");
+            cout<<"\n\n\t\t1 ";
+            sleep(1);
+            system("cls");
+
+            exit(0);
+      default:
+            break;            
+
+                   
+    }
+
+
 }
 int main(){
   mainClass C;
+  C.mainpage();
+
   // C.FillDetails();
   // C.PERSONAL();
   // C.display_Abus(C.key);
