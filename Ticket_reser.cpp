@@ -378,7 +378,8 @@ void mainClass::mainpage(){
 
             exit(0);
       default:
-            break;            
+            break;
+                     
 
                    
     }
@@ -401,6 +402,6 @@ int main(){
   
 
 }
-
+///updared
 
 //use another .h file to get design...use file with bus number as file name
