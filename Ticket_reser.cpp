@@ -96,6 +96,7 @@ void mainClass::A_bus_list(int date,string code){  // this displays available bu
     //readCSV(date,key);
     //read from file of respective destination code and print...
     //read from csv file.....
+    cout<<code<<endl;
     ifstream inputFile(code+".csv");
     if (!inputFile.is_open()) {
         cerr << "Failed to open the CSV file." << endl;
@@ -265,7 +266,12 @@ void mainClass::FillDetails(){
                cin>>date;
                //use regx to match date formatt.. its its wrog ask to reenter
         } 
-        key=start[0]+desti[0]; 
+      string a="", b="";
+      a += start.substr(0, 3); // Take the first three characters of 'start'
+      b += desti.substr(0, 3); // Take the first three characters of 'desti'
+      key = a + b; // Concatenate 'a' and 'b' to create the 'key' string
+
+
         A_bus_list(date,key); 
     }
 
@@ -294,7 +300,7 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   data.emplace_back("From : "+start+"\tdeparture time:"+gettime(code,date,num,1));
   data.emplace_back("To: "+desti+"\t Reaching time:"+gettime(code,date,num,2));
   data.emplace_back("Number of seats: "+to_string(n));
-  data.emplace_back("Seats: +",seats);
+  data.emplace_back("Seats: +"+seats);
   
   string price=gettime(code,date,num,-1);   //e-1  means get pricd
   data.emplace_back("TOTAL COST :"+price);

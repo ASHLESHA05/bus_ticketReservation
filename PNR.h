@@ -21,5 +21,4 @@ string getNewPnr() {
 	srand((unsigned) time(NULL));
     return generatePNR(6);
 }
-dfdfdfdfdf
-dfdfdf
+
