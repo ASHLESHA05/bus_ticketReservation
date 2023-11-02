@@ -1,0 +1,45 @@
+1.available_locations.txt    (available loc are stored line by line)
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+string findHighestMatchingString(const string& reference, const vector<string>& strings) {
+    string highestMatchingString;
+    int maxMatch = 0;
+
+    for (const string& str : strings) {
+        int matchCount = 0;
+        for (size_t i = 0; i < min(reference.length(), str.length()); ++i) {
+            if (reference[i] == str[i]) {
+                matchCount++;
+            } else {
+                break; // Break when a mismatch is encountered
+            }
+        }
+
+        if (matchCount > maxMatch) {
+            maxMatch = matchCount;
+            highestMatchingString = str;
+        }
+    }
+
+    return highestMatchingString;
+}
+
+int main() {
+    string reference = "apple";
+    vector<string> strings = {"appetizer", "apricot", "banana", "app", "apology"};
+
+    string highestMatch = findHighestMatchingString(reference, strings);
+
+    if (!highestMatch.empty()) {
+        cout << "The highest matching string is: " << highestMatch << endl;
+    } else {
+        cout << "No matching string found." << endl;
+    }
+
+    return 0;
+}
