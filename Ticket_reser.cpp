@@ -10,6 +10,7 @@ way of working:
      -->booked,send mail, reciept 
 
 */
+//main code
 #include<iostream>
 #include<string.h>
 #include<stdlib.h>
