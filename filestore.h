@@ -41,4 +41,20 @@ int isexist(string PNR){
     return 0;
 
 }
+int pushpnr(string dataToAppend){
+    ofstream outputFile("PRNs.txt", ios::app);
+    if (!outputFile.is_open()) {
+        cerr << "Failed to open the file for appending." << endl;
+        return 1;
+    }
 
+
+    // Append the data to the file
+    outputFile << dataToAppend << endl;
+
+    // Close the file
+    outputFile.close();
+
+
+    return 0;
+}

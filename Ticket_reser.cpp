@@ -271,7 +271,7 @@ void mainClass::FillDetails(){
                cin>>DATE;
               
                regex pattern(R"(\d{2}/\d{2}/\d{4})");
-               if(regex_match(DATE,pattern)){
+               if(!regex_match(DATE,pattern)){
                   cout<<"enter a corect formatt"<<endl;
                   cout<<"re-enter details"<<endl;
                   sleep(2);
@@ -284,27 +284,10 @@ void mainClass::FillDetails(){
                   sleep(2);
                   system("cls");
                   FillDetails();
-            
+               }
                string p="";
                p+=DATE.substr(0,2);
                date=stoi(p);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-               
                //use regx to match date formatt.. its its wrog ask to reenter
         
       string a="", b="";
@@ -315,7 +298,7 @@ void mainClass::FillDetails(){
 
         A_bus_list(date,key); 
     }
-}
+
 void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   system("cls");
   vector<string> data;
@@ -331,7 +314,8 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   string PNR=getNewPnr();
   while(isexist(PNR))
       PNR=getNewPnr();
-  // PUSH TO PNR TO FILE PNR'S    
+  // PUSH TO PNR TO FILE PNR'S 
+  pushpnr(PNR);   
    string seats;
     for(int i=0;i<n;i++)
        seats+=to_string(a[i])+"  ";
