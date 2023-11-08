@@ -26,6 +26,7 @@ way of working:
 #include "PNR.h"
 #include "filestore.h"
 #include "timecmp.h"
+#include "updateCSV.h"
 
 // This header file contains declarations for all of the functions in the Windows API, 
 using namespace std;
@@ -50,6 +51,7 @@ class mainClass{
       // CREATE another class to get personal information
 
 };
+
 void mainClass::display_Avai(string code,string num){     //this function is used to display thhe seat matrix of the bus
   //reading  from file the available seat in entered bus
 
@@ -341,6 +343,8 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
 
   pushdetails(data,PNR); // HERE IT CREATES A NEW FILE CALLED PNR
 
+  MakeChangesInCSV(date,code,num,n,a);   //decrease the number of seats
+
   cout<<"Redirecting to main page in 3 second ....";
   sleep(3);
   system("cls");
@@ -372,6 +376,10 @@ void mainClass::displayTicket(string PNR,string phn){
     } else {
         cerr << "Failed to open the file for reading." << endl;
     }
+    string dem;
+    cout<<"\n\nENTER exit to redirect";
+    cin>>dem;
+    mainpage();
   
 }
 
