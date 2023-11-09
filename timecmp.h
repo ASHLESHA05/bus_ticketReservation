@@ -22,9 +22,17 @@ int datecmp(string enteredDate) {
     }
 
     // Compare the entered date with today's date
-    if (enteredTm.tm_year >= today->tm_year && enteredTm.tm_mon >= today->tm_mon && enteredTm.tm_mday >= today->tm_mday) {
-       return 1;
-    } else {
-        return 0;
-    }
+     if (enteredTm.tm_year > today->tm_year)
+          return 1;
+        if (enteredTm.tm_year == today->tm_year)  
+            if(enteredTm.tm_mon > today->tm_mon)
+                return 1;
+            if(enteredTm.tm_mon == today->tm_mon)
+               if(enteredTm.tm_mday >= today->tm_mday)
+                return 1;
+return 0;  
+   
+  
 }
+  //  if (enteredTm.tm_year >= today->tm_year)   || enteredTm.tm_mday >= today->tm_mday)) {
+//

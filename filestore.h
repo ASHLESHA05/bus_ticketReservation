@@ -6,7 +6,7 @@
 using namespace std;
 
 int pushdetails(vector<string> info,string PNR) {
-    string filename = PNR+".txt";
+    string filename =PNR+".txt";
 
     ofstream outfile(filename);
     if (outfile.is_open()) {
@@ -21,9 +21,8 @@ int pushdetails(vector<string> info,string PNR) {
     return 0;
 }
 int isexist(string PNR){
-        string filename = "PNRs.txt";
-
-    ifstream infile(filename);
+ 
+    ifstream infile("PNRs.txt");
 
     if (infile.is_open()) {
         string line;

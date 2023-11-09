@@ -59,6 +59,7 @@ void mainClass::display_Avai(string code,string num){     //this function is use
 
     printseat();
     cout<<"\n\nAvailable seats:\n";
+    cout<<date<<endl<<code<<endl<<num<<endl;
     disp_Avai_Seats(date,code,num);
     cout<<endl;
 
@@ -80,7 +81,7 @@ void mainClass::display_Avai(string code,string num){     //this function is use
     for(int i=1;i<=n;i++){
         cout<<"\nseat "<<i<<":";
         cin>>A[i];
-}
+} 
     booked=1;
     }
     else
@@ -313,6 +314,7 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   cin>>phn;
   data.emplace_back("phone Number: "+phn);
   }
+  
   string PNR=getNewPnr();
   while(isexist(PNR))
       PNR=getNewPnr();
@@ -322,12 +324,12 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
     for(int i=0;i<n;i++)
        seats+=to_string(a[i])+"  ";
   data.emplace_back("Date of Travel: "+to_string(date));
-  data.emplace_back("From : "+start+"\tdeparture time:"+gettime(num,date,code,1));   //ERROR IN GET TIME
-  data.emplace_back("To: "+desti+"\t Reaching time:"+gettime(num,date,code,2));
+  data.emplace_back("From : "+start+"\tdeparture time:"+gettime(code,date,num,1));   //ERROR IN GET TIME
+  data.emplace_back("To: "+desti+"\t Reaching time:"+gettime(code,date,num,2));
   data.emplace_back("Number of seats: "+to_string(n));
   data.emplace_back("Seats: "+seats);
 
-  string price=gettime(num,date,code,-1);  //e-1  means get pricd
+  string price=gettime(code,date,num,-1);  //e-1  means get pricd
   int p=stoi(price);
   p=p*n;
   data.emplace_back("TOTAL COST :"+to_string(p));
@@ -341,9 +343,9 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   sleep(3);
   system("cls");
 
-  pushdetails(data,PNR); // HERE IT CREATES A NEW FILE CALLED PNR
-
-  MakeChangesInCSV(date,code,num,n,a);   //decrease the number of seats
+ // pushdetails(data,PNR); // HERE IT CREATES A NEW FILE CALLED PNR
+ 
+  MakeChangesInCSV(date,num,code,n,a);   //decrease the number of seats
 
   cout<<"Redirecting to main page in 3 second ....";
   sleep(3);
