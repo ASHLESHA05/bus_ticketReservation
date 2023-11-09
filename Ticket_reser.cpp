@@ -78,7 +78,7 @@ void mainClass::display_Avai(string code,string num){     //this function is use
     if(n!=0){
     cout<<"enter seat number\n";
     if(n<=4){
-    for(int i=1;i<=n;i++){
+    for(int i=0;i<n;i++){
         cout<<"\nseat "<<i<<":";
         cin>>A[i];
 } 
@@ -302,8 +302,9 @@ void mainClass::FillDetails(){
         A_bus_list(date,key); 
     }
 
-void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
+void mainClass::PERSONAL(int date,string num,string code,int n,int a[]){
   system("cls");
+  cout<<date<<endl<<code<<endl<<num<<endl;
   vector<string> data;
   for(int i=0;i<n;i++){
   cout<<" ENTER passenger "<<i<<" NAME :   ";
@@ -328,7 +329,6 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   data.emplace_back("To: "+desti+"\t Reaching time:"+gettime(code,date,num,2));
   data.emplace_back("Number of seats: "+to_string(n));
   data.emplace_back("Seats: "+seats);
-
   string price=gettime(code,date,num,-1);  //e-1  means get pricd
   int p=stoi(price);
   p=p*n;
@@ -343,15 +343,16 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   sleep(3);
   system("cls");
 
- // pushdetails(data,PNR); // HERE IT CREATES A NEW FILE CALLED PNR
+  pushdetails(data,PNR); // HERE IT CREATES A NEW FILE CALLED PNR
  
   MakeChangesInCSV(date,num,code,n,a);   //decrease the number of seats
 
-  cout<<"Redirecting to main page in 3 second ....";
-  sleep(3);
-  system("cls");
-  mainpage();
-    //The emplace_back method is similar to push_back, but it allows you to construct elements directly in the vector without the need for explicit temporary objects. 
+  // cout<<"Redirecting to main page in 3 second ....";
+
+  // sleep(3);
+  // system("cls");
+  // mainpage();
+  //   //The emplace_back method is similar to push_back, but it allows you to construct elements directly in the vector without the need for explicit temporary objects. 
    //store every details in  a file
 
 }

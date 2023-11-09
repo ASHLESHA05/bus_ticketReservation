@@ -18,6 +18,7 @@ vector<string> split(const string& str, char delimiter) {
 
 int MakeChangesInCSV(int date,string bus_no,string code ,int n,int a[] ) {
    cout<<code<<endl;
+   cout<<"in file: "<<a[0];
     ifstream inputFile(code+".csv");
     if (!inputFile.is_open()) {
         cerr << "Failed to open the CSV file." << endl;
