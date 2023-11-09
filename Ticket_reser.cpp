@@ -10,6 +10,8 @@ way of working:
      -->booked,send mail, reciept 
 
 */
+//main code
+
 #include<iostream>
 #include<string.h>
 #include<stdlib.h>
@@ -17,18 +19,21 @@ way of working:
 #include<fstream>
 #include<iomanip>
 #include<vector>
+#include<regex>
 #include "layout.h" 
 #include "load.h"
 #include "Avai_seats.h"
 #include "PNR.h"
 #include "filestore.h"
+#include "timecmp.h"
+#include "updateCSV.h"
 
 // This header file contains declarations for all of the functions in the Windows API, 
 using namespace std;
 class mainClass{
       
     public:
-       string key ,bus_num,ftime,dtime;//this is a keycode for different bus places...
+       string key ,bus_num,ftime,dtime,DATE;//this is a keycode for different bus places...
       int A[32],date;
      // char desti[15],name[15],phn[10];
       string start,desti,name,phn;
@@ -46,6 +51,7 @@ class mainClass{
       // CREATE another class to get personal information
 
 };
+
 void mainClass::display_Avai(string code,string num){     //this function is used to display thhe seat matrix of the bus
   //reading  from file the available seat in entered bus
 
@@ -53,6 +59,7 @@ void mainClass::display_Avai(string code,string num){     //this function is use
 
     printseat();
     cout<<"\n\nAvailable seats:\n";
+    cout<<date<<endl<<code<<endl<<num<<endl;
     disp_Avai_Seats(date,code,num);
     cout<<endl;
 
@@ -71,10 +78,10 @@ void mainClass::display_Avai(string code,string num){     //this function is use
     if(n!=0){
     cout<<"enter seat number\n";
     if(n<=4){
-    for(int i=1;i<=n;i++){
+    for(int i=0;i<n;i++){
         cout<<"\nseat "<<i<<":";
         cin>>A[i];
-}
+} 
     booked=1;
     }
     else
@@ -219,7 +226,8 @@ void mainClass::FillDetails(){
 
        //try to extract from another CLASS  INHERITENCE....***#
        //USE THE CLASS TO READ THE ITEMS FROM FILE having  available CITIES
-      
+        for (char& c : start) 
+              c = tolower(c);
       
       char c;
       string city=getnearestloc(start,cities);
@@ -254,7 +262,7 @@ void mainClass::FillDetails(){
        }
        desti=city;
        }
-        else{  
+  
                if(desti==start){
                 cout<<"start and destination cannot be same plz re Enter....";
                 getchar();
@@ -262,10 +270,29 @@ void mainClass::FillDetails(){
                 FillDetails();
                }
             
-               cout<<"ENTER date of trave date  ";
-               cin>>date;
+               cout<<"ENTER date of trave date dd/mm/yyyy ";
+               cin>>DATE;
+              
+               regex pattern(R"(\d{2}/\d{2}/\d{4})");
+               if(!regex_match(DATE,pattern)){
+                  cout<<"enter a corect formatt"<<endl;
+                  cout<<"re-enter details"<<endl;
+                  sleep(2);
+                  system("cls");
+                  FillDetails();
+               }
+               if(!datecmp(DATE)){
+                  cout<<"enter a date greater than todays date"<<endl;
+                  cout<<"re-enter details"<<endl;
+                  sleep(2);
+                  system("cls");
+                  FillDetails();
+               }
+               string p="";
+               p+=DATE.substr(0,2);
+               date=stoi(p);
                //use regx to match date formatt.. its its wrog ask to reenter
-        } 
+        
       string a="", b="";
       a += start.substr(0, 3); // Take the first three characters of 'start'
       b += desti.substr(0, 3); // Take the first three characters of 'desti'
@@ -275,8 +302,9 @@ void mainClass::FillDetails(){
         A_bus_list(date,key); 
     }
 
-void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
+void mainClass::PERSONAL(int date,string num,string code,int n,int a[]){
   system("cls");
+  cout<<date<<endl<<code<<endl<<num<<endl;
   vector<string> data;
   for(int i=0;i<n;i++){
   cout<<" ENTER passenger "<<i<<" NAME :   ";
@@ -287,25 +315,26 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   cin>>phn;
   data.emplace_back("phone Number: "+phn);
   }
+  
   string PNR=getNewPnr();
   while(isexist(PNR))
       PNR=getNewPnr();
+  // PUSH TO PNR TO FILE PNR'S 
+  pushpnr(PNR);   
    string seats;
     for(int i=0;i<n;i++)
-       seats+=a[i]+"  ";
-  
-  
- 
+       seats+=to_string(a[i])+"  ";
   data.emplace_back("Date of Travel: "+to_string(date));
-  data.emplace_back("From : "+start+"\tdeparture time:"+gettime(code,date,num,1));
+  data.emplace_back("From : "+start+"\tdeparture time:"+gettime(code,date,num,1));   //ERROR IN GET TIME
   data.emplace_back("To: "+desti+"\t Reaching time:"+gettime(code,date,num,2));
   data.emplace_back("Number of seats: "+to_string(n));
-  data.emplace_back("Seats: +"+seats);
-  
-  string price=gettime(code,date,num,-1);   //e-1  means get pricd
-  data.emplace_back("TOTAL COST :"+price);
+  data.emplace_back("Seats: "+seats);
+  string price=gettime(code,date,num,-1);  //e-1  means get pricd
+  int p=stoi(price);
+  p=p*n;
+  data.emplace_back("TOTAL COST :"+to_string(p));
   data.emplace_back("exit");
-  cout<<"Make Payment Now:";
+  cout<<"Make Payment Now: (type any key)";
   char dummy;
   cin>>dummy;
   system("cls");
@@ -313,11 +342,17 @@ void mainClass::PERSONAL(int date,string code,string num,int n,int a[]){
   cout<<"\n\n\t\tTICKET HAS BEEN BOOKED...ENJOY YOUR JOURNEY";
   sleep(3);
   system("cls");
-  cout<<"Redirecting to main page in 3 second ....";
-  sleep(3);
-  system("cls");
-  mainpage();
-    //The emplace_back method is similar to push_back, but it allows you to construct elements directly in the vector without the need for explicit temporary objects. 
+
+  pushdetails(data,PNR); // HERE IT CREATES A NEW FILE CALLED PNR
+ 
+  MakeChangesInCSV(date,num,code,n,a);   //decrease the number of seats
+
+  // cout<<"Redirecting to main page in 3 second ....";
+
+  // sleep(3);
+  // system("cls");
+  // mainpage();
+  //   //The emplace_back method is similar to push_back, but it allows you to construct elements directly in the vector without the need for explicit temporary objects. 
    //store every details in  a file
 
 }
@@ -344,6 +379,10 @@ void mainClass::displayTicket(string PNR,string phn){
     } else {
         cerr << "Failed to open the file for reading." << endl;
     }
+    string dem;
+    cout<<"\n\nENTER exit to redirect";
+    cin>>dem;
+    mainpage();
   
 }
 
@@ -402,6 +441,6 @@ int main(){
   
 
 }
-
+///updared
 
 //use another .h file to get design...use file with bus number as file name
