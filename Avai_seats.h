@@ -33,18 +33,24 @@ int disp_Avai_Seats(int date, string code, string BUS_NUMBER) {
     int numRows = data.size();
     int numCols = data[0].size(); // Assuming all rows have the same number of columns
 
-    cout << "Available Buses and Their Seat Numbers" << endl;
-    cout << "Bus Number\tSeats" << endl;
-    
+    int dummy=0;
     for (int row = (1 + 8 * (date - 1)); row <= (6 + 8 * (date - 1)) && row < numRows; ++row) {
         // Assuming the seat information is in the 4th column (index 3)
         if (data[row][0] == BUS_NUMBER) {
+            cout<<"\nAvailable seats: ";
+            dummy=1;
             for (int i = 6; i < 36; i++) {
                 cout << data[row][i] << "   ";
             }
             cout << "\n";
-            return 0;
+            return 1;
         }
+
+
+    }
+    if(dummy==0){
+        cout<<"\nPLEASE RE-ENTER CORRECT BUS NUMBER\n";
+        sleep(3);
     }
     return 0;
 }

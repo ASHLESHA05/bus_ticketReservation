@@ -17,7 +17,6 @@ void load() {
         for (q = 0; q <= 100000000; q++); // to display the character slowly
         printf("%c", 177);
     }
-    getchar();  // Use _getch() instead of getch()
     system("cls");
 }
 void load1() {
@@ -29,6 +28,5 @@ void load1() {
         for (q = 0; q <= 100000000; q++); // to display the character slowly
         printf("%c", 177);
     }
-    getchar();  // Use _getch() instead of getch()
     system("cls");
 }

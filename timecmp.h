@@ -4,12 +4,11 @@
 
 using namespace std;
 
+// Function to compare the entered date with today's date
 int datecmp(string enteredDate) {
     // Get the current date and time
     time_t now = time(0);
     tm* today = localtime(&now);
-
-
 
     // Parse the entered date
     tm enteredTm = {};
@@ -22,17 +21,15 @@ int datecmp(string enteredDate) {
     }
 
     // Compare the entered date with today's date
-     if (enteredTm.tm_year > today->tm_year)
-          return 1;
-        if (enteredTm.tm_year == today->tm_year)  
-            if(enteredTm.tm_mon > today->tm_mon)
+    if (enteredTm.tm_year > today->tm_year)
+        return 1;
+    if (enteredTm.tm_year == today->tm_year)  
+        if (enteredTm.tm_mon > today->tm_mon)
+            return 1;
+        if (enteredTm.tm_mon == today->tm_mon)
+            if (enteredTm.tm_mday >= today->tm_mday)
                 return 1;
-            if(enteredTm.tm_mon == today->tm_mon)
-               if(enteredTm.tm_mday >= today->tm_mday)
-                return 1;
-return 0;  
-   
-  
+    return 0;  
 }
-  //  if (enteredTm.tm_year >= today->tm_year)   || enteredTm.tm_mday >= today->tm_mday)) {
-//
+
+// Main function (not provided in the original code)

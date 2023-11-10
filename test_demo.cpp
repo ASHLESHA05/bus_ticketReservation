@@ -1,4 +1,4 @@
-/*
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -80,7 +80,7 @@ void PERSONAL(int date,string code,string num,int n,int a[]){
 
 }
 
-*/
+/*
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -139,7 +139,8 @@ void A_bus_list(int date,string code){  // this displays available bus
 
 
 }
+*/
 int main(){
-  A_bus_list(2,"putben");
+   //PERSONAL(10,"putben",string num,int n,int a[])
 
 }
