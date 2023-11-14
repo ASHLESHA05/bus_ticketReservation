@@ -358,12 +358,15 @@ void mainClass::displayTicket(string PNR, string phn){
 // Function to display the main page with options
 void mainClass::mainpage(){
     system("cls");
-    int choice;
+    int choice=0;
     string phn, PNR;
     cout << setw(25) << "WELCOME" << endl;
     cout << "\n\n\t1. Book Ticket\n\t2. View Your Ticket\n\t3. EXIT\n\t";
     cin >> choice;
     switch (choice){
+        case 0:
+            mainpage();
+            break;
         case 1:
             FillDetails();
             break;
